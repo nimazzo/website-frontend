@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
 
+import darkMosaic from '../assets/dark-mosaic.png';
+
 const KeyLock = () => {
 
   const [display, setDisplay] = useState(['_', '_', '_', '_', '_', '_', '_', '_']);
@@ -62,7 +64,7 @@ const KeyLock = () => {
         width: '100%',
         backgroundImage: `
       linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 10, 0, 0.95)),
-      url('https://www.transparenttextures.com/patterns/dark-mosaic.png')
+      url(${darkMosaic})
     `,
         backgroundRepeat: 'repeat',
         backgroundSize: 'auto',
