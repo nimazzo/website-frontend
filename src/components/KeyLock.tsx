@@ -9,7 +9,6 @@ const KeyLock = () => {
   const [cursor, setCursor] = useState(0);
   const [wrongCode, setWrongCode] = useState(false);
   const [blocked, setBlocked] = useState(false);
-  const [, setWrongAttempts] = useState(0);
 
   const handleNumberClick = (number: string) => {
     if (wrongCode) {
@@ -45,16 +44,42 @@ const KeyLock = () => {
     }
   };
 
-  const handleSubmit = () => {
-    setDisplay(`WRONG CODE`.split(''));
-    setWrongCode(true);
-    setWrongAttempts(prev => {
-      const newAttempts = prev + 1;
-      if (newAttempts >= 3) {
-        setBlocked(true);
+  interface AuthResponse {
+    status: string;
+    reason: string;
+    message: string;
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const code = display.join('');
+      const response = await fetch(`/authenticate?code=${encodeURIComponent(code)}`, {
+        method: 'POST',
+        credentials: "same-origin"
+      });
+
+      const result: AuthResponse = await response.json();
+
+      if (response.ok) {
+        window.location.href = '/';
+      } else if (response.status === 401) {
+        setDisplay(`WRONG CODE`.split(''));
+        setWrongCode(true);
+
+        if (result.reason === 'blocked') {
+          setBlocked(true);
+        }
+
+      } else {
+        console.error(`Unexpected response status: ${response.status}`);
+        setDisplay(`ERROR`.split(''));
+        setWrongCode(true);
       }
-      return newAttempts;
-    });
+    } catch (err) {
+      console.error('Error during authentication:', err);
+      setDisplay(`ERROR`.split(''));
+      setWrongCode(true);
+    }
   };
 
   return (
@@ -164,7 +189,7 @@ const KeyLock = () => {
                         key={val}
                         variant="contained"
                         onClick={handleSubmit}
-                        disabled={blocked || cursor < display.length}
+                        disabled={blocked || wrongCode || cursor < display.length}
                         sx={{
                           backgroundColor: '#148705',
                           color: '#000',
