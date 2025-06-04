@@ -1,6 +1,5 @@
 import {Box} from '@mui/material'
 
-import "./App.css"
 import KeyLock from "./components/KeyLock.tsx";
 
 function App() {
