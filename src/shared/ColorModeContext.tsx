@@ -1,14 +1,23 @@
 import React, {useMemo, useState} from 'react';
 import {createTheme, CssBaseline, type PaletteMode, ThemeProvider,} from '@mui/material';
-import { ColorModeContext } from './UseColorMode';
+import {ColorModeContext} from './UseColorMode';
 
-export const ColorModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<PaletteMode>('light');
+export const ColorModeProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+  // Initialize from localStorage or default to 'light'
+  const [mode, setMode] = useState<PaletteMode>(() => {
+    const savedMode = localStorage.getItem('preferredColorMode');
+    return savedMode === 'dark' ? 'dark' : 'light';
+  });
 
+  // Wrap toggleColorMode to save to localStorage
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => {
+          const nextMode = prevMode === 'light' ? 'dark' : 'light';
+          localStorage.setItem('preferredColorMode', nextMode);
+          return nextMode;
+        });
       },
     }),
     []
@@ -55,7 +64,7 @@ export const ColorModeProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline/>
         {children}
       </ThemeProvider>
     </ColorModeContext.Provider>

@@ -1,7 +1,7 @@
 import {useTheme} from '@mui/material/styles';
-import {CssBaseline, Box} from '@mui/material';
+import {Box, CssBaseline} from '@mui/material';
 
-function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayout({children}: { children: React.ReactNode }) {
   const theme = useTheme();
 
   return (
@@ -35,15 +35,15 @@ function AppLayout({ children }: { children: React.ReactNode }) {
           content: '""',
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/grain-dark.png)',
+          backgroundImage: 'url(grain-dark.png)',
           opacity: 0.1,
           zIndex: 0,
           pointerEvents: 'none',
         },
       }}
     >
-      <Box sx={{ position: 'relative', zIndex: 1 }}>
-        <CssBaseline />
+      <Box sx={{position: 'relative', zIndex: 1}}>
+        <CssBaseline/>
         {children}
       </Box>
     </Box>

@@ -87,7 +87,7 @@ const KeyLock = () => {
         width: '100%',
         backgroundImage: `
       linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 10, 0, 0.95)),
-      url('/dark-mosaic.png')
+      url('dark-mosaic.png')
     `,
         backgroundRepeat: 'repeat',
         backgroundSize: 'auto',
