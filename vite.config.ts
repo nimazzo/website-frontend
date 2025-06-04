@@ -9,9 +9,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        lockscreen: path.resolve(__dirname, 'lockscreen/index.html'),          // e.g. /
-        homepage: path.resolve(__dirname, 'homepage/index.html'),      // e.g. /home
-      }
-    }
+        index: path.resolve(__dirname, 'index2.html'),          // e.g. /
+        // lockscreen: path.resolve(__dirname, 'lockscreen/index.html'),          // e.g. /
+        // homepage: path.resolve(__dirname, 'homepage/index.html'),      // e.g. /home
+      },
+    },
   }
 })
