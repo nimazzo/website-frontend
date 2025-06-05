@@ -357,6 +357,7 @@ const Education = () => {
       <Card
         elevation={3}
         sx={{
+          border: `1px solid ${theme.palette.divider}`,
           borderRadius: 2,
           backgroundColor: theme.palette.background.paper,
           boxShadow: theme.shadows[1],
