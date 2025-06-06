@@ -149,7 +149,11 @@ const Header = () => {
         <Box sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: 1,
+          gap: {
+            xs: '0px',
+            md: '5px'
+          },
+          flexWrap: 'wrap',
         }}>
           {sections.map((section) => (
             <Button
@@ -165,14 +169,15 @@ const Header = () => {
               {section}
             </Button>
           ))}
+          <Box sx={{ml: 'auto'}}>
+            <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+              {theme.palette.mode === 'dark' ? <LightMode/> : <DarkMode/>}
+            </IconButton>
 
-          <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-            {theme.palette.mode === 'dark' ? <LightMode/> : <DarkMode/>}
-          </IconButton>
-
-          <IconButton onClick={logout} color="inherit" title="Logout">
-            <LogoutIcon/>
-          </IconButton>
+            <IconButton onClick={logout} color="inherit" title="Logout">
+              <LogoutIcon/>
+            </IconButton>
+          </Box>
         </Box>
       </Toolbar>
     </AppBar>
