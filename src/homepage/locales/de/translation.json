@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "about": "Über mich",
+    "education": "Bildung",
+    "skills": "Fähigkeiten",
+    "projects": "Projekte"
+  },
+  "tooltips": {
+    "logout": "Abmelden",
+    "lightMode": "Wechsel zu hellem Modus",
+    "darkMode": "Wechsel zu dunklem Modus",
+    "language": "Sprache ändern",
+    "scrollToTop": "Nach oben navigieren"
+  },
+  "education": {
+    "grade": "Note"
+  },
+  "legal": {
+    "copyright": "Alle Rechte vorbehalten."
+  }
+}

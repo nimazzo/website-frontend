@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "about": "About",
+    "education": "Education",
+    "skills": "Skills",
+    "projects": "Projects"
+  },
+  "tooltips": {
+    "logout": "Logout",
+    "lightMode": "Switch to light mode",
+    "darkMode": "Switch to dark mode",
+    "language": "Change language",
+    "scrollToTop": "Navigate to top"
+  },
+  "education": {
+    "grade": "Grade"
+  },
+  "legal": {
+    "copyright": "All rights reserved."
+  }
+}

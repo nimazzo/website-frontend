@@ -4,6 +4,7 @@ import {DefaultContent} from "./DefaultContent.ts";
 export interface ContentData {
   about: {
     name: string;
+    domain: string;
     description: string[]
     photo: string | null;
     country: string;
@@ -26,6 +27,7 @@ export interface ContentData {
   }[]
   skills: {
     title: string;
+    withLevels?: boolean;
     items: { name: string, level?: number }[];
   }[]
   projects: {

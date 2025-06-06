@@ -3,6 +3,7 @@ import type {ContentData} from "./ContentContext.tsx";
 export const DefaultContent: ContentData = {
   about: {
     name: "Foo Bar",
+    domain: "example.com",
     description: [
       "Lorem ipsum dolor sit amet et nostrud tempor sed autem feugiat nobis ex duis sit sea invidunt vero est eos autem delenit consetetur exerci ad dolores diam et kasd sea lorem ipsum takimata sit feugiat sit sit tincidunt sit sed"
     ],

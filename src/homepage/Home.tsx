@@ -12,6 +12,8 @@ import {
   Grid,
   IconButton,
   Link,
+  Menu,
+  MenuItem,
   Slide,
   Stack,
   Toolbar,
@@ -21,7 +23,7 @@ import {
   Zoom
 } from "@mui/material";
 import * as React from "react";
-import {type ReactElement, type ReactNode} from "react";
+import {type ReactElement, type ReactNode, useEffect, useState} from "react";
 import {DarkMode, LightMode} from "@mui/icons-material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -29,9 +31,13 @@ import EmailIcon from '@mui/icons-material/Email';
 import CodeIcon from '@mui/icons-material/Code';
 import SchoolIcon from '@mui/icons-material/School';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {useColorMode} from "../shared/UseColorMode.tsx";
+import LanguageIcon from '@mui/icons-material/Language';
+import {useColorMode} from "./UseColorMode.tsx";
 import {useContent} from "./ContentContext.tsx";
 import {ContentProvider} from "./ContentContextProvider.tsx";
+import {useTranslation} from "react-i18next";
+
+import './i18n';
 
 const icons: Record<string, string | React.ReactNode> = {
   Java: '☕',
@@ -99,23 +105,58 @@ const InitialsIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 interface HideOnScrollProps {
   children: ReactElement;
+  forceShow?: boolean;
 }
 
-const HideOnScroll = (props: HideOnScrollProps) => {
+const HideOnScroll = ({children, forceShow = false}: HideOnScrollProps) => {
   const trigger = useScrollTrigger({threshold: 100});
+  const [hoveringTop, setHoveringTop] = useState(false);
+
+  useEffect(() => {
+    const handleMouseHovering = (e: MouseEvent) => {
+      setHoveringTop(e.clientY < 50);
+    };
+
+    window.addEventListener('mousemove', handleMouseHovering);
+    return () => window.removeEventListener('mousemove', handleMouseHovering);
+  }, []);
+
+  const shouldShow = !trigger || hoveringTop || forceShow;
 
   return (
-    <Slide appear={false} direction={"down"} in={!trigger}>
-      {props.children}
+    <Slide appear={false} direction={"down"} in={shouldShow}>
+      {children}
     </Slide>
   );
-
 }
 
 const Header = () => {
   const {content} = useContent();
   const theme = useTheme();
   const colorMode = useColorMode();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const languageMenuOpen = Boolean(anchorEl);
+  const {t, i18n} = useTranslation();
+
+  const handleLanguageMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleLanguageMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang)
+      .then(() => {
+        console.log(`Language changed to ${lang}`);
+      })
+      .catch((err) => {
+        console.error('Language switch failed:', err);
+      });
+    handleLanguageMenuClose();
+  };
 
   const scrollToTop = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -126,7 +167,7 @@ const Header = () => {
   };
 
   return (
-    <HideOnScroll>
+    <HideOnScroll forceShow={languageMenuOpen}>
       <AppBar
         position="sticky"
         color="primary"
@@ -142,25 +183,30 @@ const Header = () => {
       >
         <Toolbar>
           <Box
-            onClick={scrollToTop}
             sx={{
-              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               flexGrow: 1,
+              gap: 1
+            }}
+          >
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
               gap: 1,
+              cursor: 'pointer',
               transformOrigin: 'left center',  // <-- add this line
               '&:hover': {
                 opacity: 0.8,
                 transform: 'scale(1.05)',
                 transition: 'all 0.3s ease',
-              },
-            }}
-          >
-            <InitialsIcon/>
-            <Typography variant="h6" component="div" sx={{fontWeight: 'bold'}}>
-              {content.about.name}
-            </Typography>
+              }
+            }}>
+              <InitialsIcon/>
+              <Typography onClick={scrollToTop} variant="h6" component="div" sx={{fontWeight: 'bold'}}>
+                {content.about.name}
+              </Typography>
+            </Box>
           </Box>
 
           <Box sx={{
@@ -178,20 +224,42 @@ const Header = () => {
                 color="inherit"
                 href={`#${section}`}
                 sx={{
-                  textTransform: 'capitalize',
+                  textTransform: 'none',
                   transition: 'color 0.3s ease',
                   '&:hover': {color: theme.palette.secondary.light},
                 }}
               >
-                {section}
+                {t(`sections.${section}`)}
               </Button>
             ))}
+
             <Box sx={{ml: 'auto'}}>
-              <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+              <IconButton
+                color="inherit"
+                onClick={handleLanguageMenuClick}
+                title={t("tooltips.language")}
+              >
+                <LanguageIcon/>
+              </IconButton>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={languageMenuOpen}
+                onClose={handleLanguageMenuClose}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
+              >
+                <MenuItem onClick={() => handleLanguageChange('de')}>Deutsch</MenuItem>
+                <MenuItem onClick={() => handleLanguageChange('en')}>English</MenuItem>
+              </Menu>
+
+              <IconButton onClick={colorMode.toggleColorMode} color="inherit" title={
+                theme.palette.mode === 'dark' ? t("tooltips.lightMode") : t("tooltips.darkMode")
+              }>
                 {theme.palette.mode === 'dark' ? <LightMode/> : <DarkMode/>}
               </IconButton>
 
-              <IconButton onClick={logout} color="inherit" title="Logout">
+              <IconButton onClick={logout} color="inherit" title={t("tooltips.logout")}>
                 <LogoutIcon/>
               </IconButton>
             </Box>
@@ -203,6 +271,8 @@ const Header = () => {
 };
 
 const ScrollToTopButton: React.FC = () => {
+  const {t} = useTranslation();
+
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
@@ -218,6 +288,7 @@ const ScrollToTopButton: React.FC = () => {
         color="primary"
         size="small"
         onClick={handleClick}
+        title={t("tooltips.scrollToTop")}
         sx={{
           position: 'fixed',
           bottom: 16,
@@ -234,11 +305,12 @@ const ScrollToTopButton: React.FC = () => {
 
 type SectionProps = {
   id: string;
-  title: string;
   children: ReactNode;
 };
 
-const Section: React.FC<SectionProps> = ({id, title, children}) => {
+const Section: React.FC<SectionProps> = ({id, children}) => {
+  const {t} = useTranslation();
+
   const {loading} = useContent();
   const theme = useTheme();
 
@@ -299,7 +371,7 @@ const Section: React.FC<SectionProps> = ({id, title, children}) => {
               },
             }}
           >
-            {title}
+            {t(`sections.${id}`)}
           </Typography>
         </Link>
       </Box>
@@ -314,7 +386,7 @@ const About = () => {
   const theme = useTheme();
 
   return (
-    <Section id="about" title="About Me">
+    <Section id="about">
       <Box
         sx={{
           border: `1px solid ${theme.palette.divider}`,
@@ -385,11 +457,12 @@ const getGradeColor = (grade: string): 'success' | 'warning' | 'default' => {
 };
 
 const Education = () => {
+  const {t} = useTranslation();
   const {content, loading} = useContent();
   const theme = useTheme();
 
   return (
-    <Section id="education" title="Education">
+    <Section id="education">
       <Card
         elevation={3}
         sx={{
@@ -452,7 +525,7 @@ const Education = () => {
                   </Typography>
                   <Chip
                     size="small"
-                    label={`Grade: ${edu.grade}`}
+                    label={`${t("education.grade")}: ${edu.grade}`}
                     color={getGradeColor(edu.grade)}
                   />
                 </Box>
@@ -485,7 +558,7 @@ const Skills = () => {
   const theme = useTheme();
 
   return (
-    <Section id="skills" title="Skills">
+    <Section id="skills">
       <BlurredOverlay loading={loading}>
         <Grid container direction="column" spacing={6}>
           {content.skills.map((group) => (
@@ -503,7 +576,7 @@ const Skills = () => {
                 {group.title}
               </Typography>
 
-              {group.title === 'Programming Languages' ? (
+              {group.withLevels ? (
                 <Grid container spacing={2}>
                   {group.items.map((item) => (
                     <Grid
@@ -564,7 +637,7 @@ const Projects = () => {
   const theme = useTheme();
 
   return (
-    <Section id="projects" title="Projects">
+    <Section id="projects">
       <BlurredOverlay loading={loading}>
         <Grid container direction="column" spacing={6}>
           {content.projects.map((project, index) => {
@@ -708,6 +781,7 @@ const Content = () => {
 
 
 const Footer = () => {
+  const {t} = useTranslation();
   const {content} = useContent();
   const theme = useTheme();
 
@@ -739,7 +813,7 @@ const Footer = () => {
         </Link>
       </Stack>
       <Typography variant="body2" color="text.secondary">
-        © {new Date().getFullYear()} {content.about.name}. All rights reserved.
+        © {new Date().getFullYear()} {content.about.domain}. {t("legal.copyright")}
       </Typography>
     </Box>
   );
