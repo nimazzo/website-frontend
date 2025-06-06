@@ -27,6 +27,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EmailIcon from '@mui/icons-material/Email';
 import CodeIcon from '@mui/icons-material/Code';
 import SchoolIcon from '@mui/icons-material/School';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {useColorMode} from "../shared/UseColorMode.tsx";
 import {useContent} from "./ContentContext.tsx";
 import {ContentProvider} from "./ContentContextProvider.tsx";
@@ -104,6 +105,10 @@ const Header = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
 
+  const logout = () => {
+    window.location.href = '/logout';
+  };
+
   return (
     <AppBar
       position="sticky"
@@ -141,7 +146,11 @@ const Header = () => {
           </Typography>
         </Box>
 
-        <Box>
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}>
           {sections.map((section) => (
             <Button
               key={section}
@@ -159,6 +168,10 @@ const Header = () => {
 
           <IconButton onClick={colorMode.toggleColorMode} color="inherit">
             {theme.palette.mode === 'dark' ? <LightMode/> : <DarkMode/>}
+          </IconButton>
+
+          <IconButton onClick={logout} color="inherit" title="Logout">
+            <LogoutIcon/>
           </IconButton>
         </Box>
       </Toolbar>
