@@ -12,6 +12,7 @@ import {
   Grid,
   IconButton,
   Link,
+  Slide,
   Stack,
   Toolbar,
   Typography,
@@ -20,7 +21,7 @@ import {
   Zoom
 } from "@mui/material";
 import * as React from "react";
-import {type ReactNode} from "react";
+import {type ReactElement, type ReactNode} from "react";
 import {DarkMode, LightMode} from "@mui/icons-material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -96,6 +97,21 @@ const InitialsIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+interface HideOnScrollProps {
+  children: ReactElement;
+}
+
+const HideOnScroll = (props: HideOnScrollProps) => {
+  const trigger = useScrollTrigger({threshold: 100});
+
+  return (
+    <Slide appear={false} direction={"down"} in={!trigger}>
+      {props.children}
+    </Slide>
+  );
+
+}
+
 const Header = () => {
   const {content} = useContent();
   const theme = useTheme();
@@ -110,77 +126,79 @@ const Header = () => {
   };
 
   return (
-    <AppBar
-      position="sticky"
-      color="primary"
-      elevation={4}
-      sx={{
-        backdropFilter: 'blur(8px)',
-        backgroundColor: theme.palette.mode === 'light'
-          ? 'rgba(63,81,181, 0.85)'
-          : 'rgba(48,48,48, 0.85)',
-        borderBottom: `2px solid ${theme.palette.secondary.main}`,
-        transition: 'background-color 0.3s ease',
-      }}
-    >
-      <Toolbar>
-        <Box
-          onClick={scrollToTop}
-          sx={{
-            cursor: 'pointer',
+    <HideOnScroll>
+      <AppBar
+        position="sticky"
+        color="primary"
+        elevation={4}
+        sx={{
+          backdropFilter: 'blur(8px)',
+          backgroundColor: theme.palette.mode === 'light'
+            ? 'rgba(63,81,181, 0.85)'
+            : 'rgba(48,48,48, 0.85)',
+          borderBottom: `2px solid ${theme.palette.secondary.main}`,
+          transition: 'background-color 0.3s ease',
+        }}
+      >
+        <Toolbar>
+          <Box
+            onClick={scrollToTop}
+            sx={{
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              flexGrow: 1,
+              gap: 1,
+              transformOrigin: 'left center',  // <-- add this line
+              '&:hover': {
+                opacity: 0.8,
+                transform: 'scale(1.05)',
+                transition: 'all 0.3s ease',
+              },
+            }}
+          >
+            <InitialsIcon/>
+            <Typography variant="h6" component="div" sx={{fontWeight: 'bold'}}>
+              {content.about.name}
+            </Typography>
+          </Box>
+
+          <Box sx={{
             display: 'flex',
             alignItems: 'center',
-            flexGrow: 1,
-            gap: 1,
-            transformOrigin: 'left center',  // <-- add this line
-            '&:hover': {
-              opacity: 0.8,
-              transform: 'scale(1.05)',
-              transition: 'all 0.3s ease',
+            gap: {
+              xs: '0px',
+              md: '5px'
             },
-          }}
-        >
-          <InitialsIcon/>
-          <Typography variant="h6" component="div" sx={{fontWeight: 'bold'}}>
-            {content.about.name}
-          </Typography>
-        </Box>
+            flexWrap: 'wrap',
+          }}>
+            {sections.map((section) => (
+              <Button
+                key={section}
+                color="inherit"
+                href={`#${section}`}
+                sx={{
+                  textTransform: 'capitalize',
+                  transition: 'color 0.3s ease',
+                  '&:hover': {color: theme.palette.secondary.light},
+                }}
+              >
+                {section}
+              </Button>
+            ))}
+            <Box sx={{ml: 'auto'}}>
+              <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+                {theme.palette.mode === 'dark' ? <LightMode/> : <DarkMode/>}
+              </IconButton>
 
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: {
-            xs: '0px',
-            md: '5px'
-          },
-          flexWrap: 'wrap',
-        }}>
-          {sections.map((section) => (
-            <Button
-              key={section}
-              color="inherit"
-              href={`#${section}`}
-              sx={{
-                textTransform: 'capitalize',
-                transition: 'color 0.3s ease',
-                '&:hover': {color: theme.palette.secondary.light},
-              }}
-            >
-              {section}
-            </Button>
-          ))}
-          <Box sx={{ml: 'auto'}}>
-            <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-              {theme.palette.mode === 'dark' ? <LightMode/> : <DarkMode/>}
-            </IconButton>
-
-            <IconButton onClick={logout} color="inherit" title="Logout">
-              <LogoutIcon/>
-            </IconButton>
+              <IconButton onClick={logout} color="inherit" title="Logout">
+                <LogoutIcon/>
+              </IconButton>
+            </Box>
           </Box>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </HideOnScroll>
   );
 };
 
