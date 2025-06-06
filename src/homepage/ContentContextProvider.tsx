@@ -7,7 +7,7 @@ export const ContentProvider = ({children}: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('/content')
+    fetch('/private/content')
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
