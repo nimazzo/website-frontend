@@ -23,7 +23,7 @@ import {
   Zoom
 } from "@mui/material";
 import * as React from "react";
-import {type ReactElement, type ReactNode, useEffect, useState} from "react";
+import {type ReactElement, type ReactNode, useEffect, useMemo, useState} from "react";
 import {DarkMode, LightMode} from "@mui/icons-material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -385,6 +385,16 @@ const About = () => {
   const {content, loading} = useContent();
   const theme = useTheme();
 
+  const avatar = useMemo(() => {
+    return (
+      <Avatar
+        alt={content.about.name}
+        src={content.about.photo ?? ""}
+        sx={{width: 240, height: 240, mx: 'auto'}}
+      />
+    );
+  }, [content.about.name, content.about.photo]);
+
   return (
     <Section id="about">
       <Box
@@ -418,11 +428,7 @@ const About = () => {
 
             {/* Avatar and GitHub */}
             <Box sx={{textAlign: 'center'}}>
-              <Avatar
-                alt={content.about.name}
-                src={content.about.photo ?? ""}
-                sx={{width: 240, height: 240, mx: 'auto'}}
-              />
+              {avatar}
               <Stack
                 direction="row"
                 alignItems="center"
@@ -632,90 +638,110 @@ const Skills = () => {
   );
 };
 
+interface ProjectCardProps {
+  project: {
+    title: string;
+    description: string;
+    techStack: string[];
+    screenshotUrl: string | null;
+    githubUrl: string;
+  },
+  isEven: boolean;
+}
+
+const ProjectCard = (props: ProjectCardProps) => {
+  const theme = useTheme();
+
+  const screenshot = useMemo(() => (
+    <Box
+      component="img"
+      src={props.project.screenshotUrl ?? ""}
+      alt={`${props.project.title} screenshot`}
+      sx={{
+        width: '100%',
+        maxWidth: 350,
+        height: 'auto',
+        borderRadius: 2,
+        boxShadow: theme.shadows[3],
+        objectFit: 'contain',
+      }}
+    />
+  ), [props.project.screenshotUrl, props.project.title, theme.shadows]);
+
+  return (
+    <Grid
+      sx={{
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: 2,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        p: {xs: 2, md: 3},
+      }}
+    >
+      <Grid
+        container
+        spacing={4}
+        alignItems="center"
+        direction={props.isEven ? 'row-reverse' : 'row'}
+      >
+        {/* Text Content */}
+        <Grid sx={{maxWidth: '65%'}}>
+          <Typography variant="h5" gutterBottom>
+            {props.project.title}
+          </Typography>
+          <Typography variant="body1" component="p">
+            {props.project.description}
+          </Typography>
+          <Box sx={{mb: 2}}>
+            {props.project.techStack.map((tech: string) => (
+              <Chip
+                key={tech}
+                label={tech}
+                color="primary"
+                variant="outlined"
+                sx={{mr: 1, mb: 1}}
+              />
+            ))}
+          </Box>
+          <Button
+            variant="outlined"
+            startIcon={<GitHubIcon/>}
+            href={props.project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Source
+          </Button>
+        </Grid>
+
+        <Grid
+          sx={{
+            maxWidth: '30%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          {screenshot}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
 const Projects = () => {
   const {content, loading} = useContent();
-  const theme = useTheme();
 
   return (
     <Section id="projects">
       <BlurredOverlay loading={loading}>
         <Grid container direction="column" spacing={6}>
-          {content.projects.map((project, index) => {
-            const isEven = index % 2 === 1;
-
-            return (
-              <Grid
-                key={project.title}
-                sx={{
-                  border: `1px solid ${theme.palette.divider}`,
-                  borderRadius: 2,
-                  backgroundColor: theme.palette.background.paper,
-                  boxShadow: theme.shadows[1],
-                  p: {xs: 2, md: 3},
-                }}
-              >
-                <Grid
-                  container
-                  spacing={4}
-                  alignItems="center"
-                  direction={isEven ? 'row-reverse' : 'row'}
-                >
-                  {/* Text Content */}
-                  <Grid sx={{maxWidth: '65%'}}>
-                    <Typography variant="h5" gutterBottom>
-                      {project.title}
-                    </Typography>
-                    <Typography variant="body1" component="p">
-                      {project.description}
-                    </Typography>
-                    <Box sx={{mb: 2}}>
-                      {project.techStack.map((tech) => (
-                        <Chip
-                          key={tech}
-                          label={tech}
-                          color="primary"
-                          variant="outlined"
-                          sx={{mr: 1, mb: 1}}
-                        />
-                      ))}
-                    </Box>
-                    <Button
-                      variant="outlined"
-                      startIcon={<GitHubIcon/>}
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Source
-                    </Button>
-                  </Grid>
-
-                  {/* Screenshot Image */}
-                  <Grid
-                    sx={{
-                      maxWidth: '30%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Box
-                      component="img"
-                      src={project.screenshotUrl ?? ""}
-                      alt={`${project.title} screenshot`}
-                      sx={{
-                        width: '100%',
-                        maxWidth: 350, // smaller max width
-                        height: 'auto',
-                        borderRadius: 2,
-                        boxShadow: theme.shadows[3],
-                        objectFit: 'contain',
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            );
-          })}
+          {content.projects.map((project, index) => (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              isEven={index % 2 === 1}
+            />
+          ))}
         </Grid>
       </BlurredOverlay>
     </Section>

@@ -7,7 +7,7 @@ export const DefaultContent: ContentData = {
     description: [
       "Lorem ipsum dolor sit amet et nostrud tempor sed autem feugiat nobis ex duis sit sea invidunt vero est eos autem delenit consetetur exerci ad dolores diam et kasd sea lorem ipsum takimata sit feugiat sit sit tincidunt sit sed"
     ],
-    photo: null,
+    photo: "/images/profile.jpg",
     country: "Country",
     github: {
       text: "Check out my GitHub",
@@ -46,7 +46,7 @@ export const DefaultContent: ContentData = {
       description:
         'Lorem ipsum dolor sit amet nulla labore sanctus sit at autem luptatum diam in vel est amet sea nihil magna',
       techStack: ['React', 'Spring Boot', 'TypeScript'],
-      screenshotUrl: null,
+      screenshotUrl: "/images/screenshot.jpg",
       githubUrl: '#',
     },
   ]
