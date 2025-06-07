@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {DefaultContent} from "./DefaultContent.ts";
-import {ContentContext, type ContentData} from "./ContentContext.tsx";
 import {useTranslation} from "react-i18next";
+import {ContentContext, type ContentData} from "./ContentContext.tsx";
+import DefaultContent from "../data/DefaultContent.ts";
 
-export const ContentProvider = ({children}: { children: React.ReactNode }) => {
+interface ContentProviderProps {
+  children: React.ReactNode;
+}
+
+export const ContentProvider = (props: ContentProviderProps) => {
   const [content, setContent] = useState<ContentData>(DefaultContent);
   const [loading, setLoading] = useState<boolean>(true);
   const {i18n} = useTranslation();
@@ -29,7 +33,7 @@ export const ContentProvider = ({children}: { children: React.ReactNode }) => {
 
   return (
     <ContentContext.Provider value={{content, setContent, loading}}>
-      {children}
+      {props.children}
     </ContentContext.Provider>
   );
 };

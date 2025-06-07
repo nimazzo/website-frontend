@@ -1,14 +1,14 @@
-import {Box} from '@mui/material'
+import {Box} from "@mui/material"
 
 import KeyLock from "./components/KeyLock.tsx";
 
-function App() {
+const App = () => {
   return (
     <Box sx={{
       height: "100vh",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     }}>
       <KeyLock/>
     </Box>

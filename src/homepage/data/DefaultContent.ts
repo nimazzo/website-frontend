@@ -1,6 +1,6 @@
-import type {ContentData} from "./ContentContext.tsx";
+import type {ContentData} from "../context/ContentContext.tsx";
 
-export const DefaultContent: ContentData = {
+const DefaultContent: ContentData = {
   about: {
     name: "Foo Bar",
     domain: "example.com",
@@ -51,3 +51,5 @@ export const DefaultContent: ContentData = {
     },
   ]
 };
+
+export default DefaultContent;

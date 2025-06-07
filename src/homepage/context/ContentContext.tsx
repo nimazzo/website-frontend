@@ -1,5 +1,5 @@
 import {createContext, useContext} from 'react';
-import {DefaultContent} from "./DefaultContent.ts";
+import DefaultContent from "../data/DefaultContent.ts";
 
 export interface ContentData {
   about: {
@@ -39,11 +39,11 @@ export interface ContentData {
   }[]
 }
 
-type ContentContextType = {
+interface ContentContextType {
   content: ContentData;
   setContent: (content: ContentData) => void;
   loading: boolean;
-};
+}
 
 export const ContentContext = createContext<ContentContextType>({
   content: DefaultContent,

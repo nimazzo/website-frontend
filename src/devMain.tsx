@@ -1,11 +1,13 @@
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
-import App from './lockscreen/App.tsx'
-import AppLayout from './homepage/AppLayout.tsx'
-import './index.css'
-import {ColorModeProvider} from "./homepage/ColorModeContext.tsx";
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import Home from './homepage/Home.tsx'
+
+import ColorModeProvider from "./homepage/context/ColorModeProvider.tsx";
+import AppLayout from './homepage/components/AppLayout.tsx'
+import App from './lockscreen/App.tsx'
+import Home from './homepage/components/Home.tsx'
+
+import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

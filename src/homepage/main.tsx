@@ -1,8 +1,8 @@
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
-import Home from './Home.tsx'
-import AppLayout from './AppLayout.tsx'
-import {ColorModeProvider} from "./ColorModeContext.tsx";
+import Home from './components/Home.tsx'
+import AppLayout from './components/AppLayout.tsx'
+import ColorModeProvider from "./context/ColorModeProvider.tsx";
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(

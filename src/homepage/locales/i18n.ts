@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import {initReactI18next} from "react-i18next";
 
-import en from './locales/en/translation.json';
-import de from './locales/de/translation.json';
+import en from './en/translation.json';
+import de from './de/translation.json';
 
 i18n
   .use(initReactI18next)
@@ -13,7 +13,7 @@ i18n
     },
     fallbackLng: 'de',
     interpolation: {
-      escapeValue: false, // React already does escaping
+      escapeValue: false,
     },
   })
   .then(() => {
@@ -22,5 +22,3 @@ i18n
   .catch((error) => {
     console.error('i18n init failed:', error);
   });
-
-export default i18n;
