@@ -64,6 +64,18 @@ const icons: Record<string, string | React.ReactNode> = {
 };
 
 const Home = () => {
+  const {i18n} = useTranslation();
+  const savedLanguage = localStorage.getItem('preferredLanguage') || 'de';
+  if (i18n.language !== savedLanguage) {
+    i18n.changeLanguage(savedLanguage)
+      .then(() => {
+        console.log(`Language changed to ${savedLanguage}`);
+      })
+      .catch((err) => {
+        console.error('Language switch failed:', err);
+      });
+  }
+
   return (
     <>
       <ContentProvider>
@@ -148,6 +160,7 @@ const Header = () => {
   };
 
   const handleLanguageChange = (lang: string) => {
+    localStorage.setItem('preferredLanguage', lang);
     i18n.changeLanguage(lang)
       .then(() => {
         console.log(`Language changed to ${lang}`);
