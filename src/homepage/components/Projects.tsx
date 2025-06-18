@@ -1,12 +1,5 @@
-import {useMemo} from "react";
-import {
-  Box,
-  Button,
-  Chip,
-  Grid,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import {useMemo, useState} from "react";
+import {Box, Button, Chip, Dialog, Grid, Typography, useTheme,} from "@mui/material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 import {useContent} from "../context/ContentContext.tsx";
@@ -26,6 +19,10 @@ interface ProjectCardProps {
 
 const ProjectCard = (props: ProjectCardProps) => {
   const theme = useTheme();
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const screenshot = useMemo(() => (
     <Box
@@ -34,11 +31,10 @@ const ProjectCard = (props: ProjectCardProps) => {
       alt={`${props.project.title} screenshot`}
       sx={{
         width: '100%',
-        maxWidth: 350,
         height: 'auto',
         borderRadius: 2,
         boxShadow: theme.shadows[3],
-        objectFit: 'contain',
+        objectFit: 'cover',
       }}
     />
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,20 +50,21 @@ const ProjectCard = (props: ProjectCardProps) => {
         p: {xs: 2, md: 3},
       }}
     >
-      <Grid
-        container
-        spacing={4}
-        alignItems="center"
-        direction={props.isEven ? 'row-reverse' : 'row'}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: {xs: 'column', md: props.isEven ? 'row-reverse' : 'row'},
+          gap: 4,
+        }}
       >
-        <Grid sx={{maxWidth: '65%'}}>
+        <Box justifyItems={props.isEven ? 'end' : 'start'}>
           <Typography variant="h5" gutterBottom>
             {props.project.title}
           </Typography>
           <Typography variant="body1" component="p">
             {props.project.description}
           </Typography>
-          <Box sx={{mb: 2}}>
+          <Box sx={{mt: 2, mb: 2}}>
             {props.project.techStack.map((tech: string) => (
               <Chip
                 key={tech}
@@ -87,18 +84,33 @@ const ProjectCard = (props: ProjectCardProps) => {
           >
             View Source
           </Button>
-        </Grid>
+        </Box>
 
-        <Grid
+        <Box
           sx={{
-            maxWidth: '30%',
+            maxWidth: {xs: '100%', md: '50%'},
             display: 'flex',
             justifyContent: 'center',
+            cursor: 'pointer',
           }}
+          onClick={handleOpen}
         >
           {screenshot}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
+      <Dialog open={open} onClose={handleClose} maxWidth="lg">
+        <Box
+          component="img"
+          src={props.project.screenshotUrl ?? ""}
+          alt={`${props.project.title} screenshot`}
+          sx={{
+            width: '100%',
+            height: 'auto',
+            objectFit: 'contain',
+            borderRadius: 2,
+          }}
+        />
+      </Dialog>
     </Grid>
   );
 };

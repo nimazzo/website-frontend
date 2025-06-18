@@ -1,8 +1,5 @@
 import {type ReactNode} from "react";
-import {
-  Box,
-  CircularProgress,
-} from "@mui/material";
+import {Box, CircularProgress,} from "@mui/material";
 
 interface BlurredOverlayProps {
   loading: boolean;
@@ -13,7 +10,7 @@ const BlurredOverlay = (props: BlurredOverlayProps) => {
   const {loading, children} = props;
 
   return (
-    <Box sx={{position: 'relative', userSelect: 'none'}}>
+    <Box sx={{position: 'relative'}}>
       <Box
         sx={{
           '& > *': {
