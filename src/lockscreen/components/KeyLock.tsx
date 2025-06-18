@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
 
 const KeyLock = () => {
@@ -6,6 +6,14 @@ const KeyLock = () => {
   const [cursor, setCursor] = useState(0);
   const [wrongCode, setWrongCode] = useState(false);
   const [blocked, setBlocked] = useState(false);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("error")) {
+      setDisplay("WRONG CODE".split(""));
+      setWrongCode(true);
+    }
+  }, []);
 
   const handleNumberClick = (number: string) => {
     if (wrongCode) {
