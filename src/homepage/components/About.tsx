@@ -1,12 +1,5 @@
 import {useMemo} from "react";
-import {
-  Avatar,
-  Box,
-  Link,
-  Stack,
-  Typography,
-  useTheme
-} from "@mui/material";
+import {Avatar, Box, Link, Stack, Typography, useTheme} from "@mui/material";
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 
@@ -43,7 +36,7 @@ const About = () => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: {xs: 'column', sm: 'row'},
+              flexDirection: {xs: 'column-reverse', md: 'row'},
               alignItems: 'center',
               gap: 4,
             }}
