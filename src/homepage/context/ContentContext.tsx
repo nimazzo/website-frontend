@@ -28,7 +28,7 @@ export interface ContentData {
   skills: {
     title: string;
     withLevels?: boolean;
-    items: { name: string, level?: number }[];
+    items: { name: string, level?: number, icon?: string }[];
   }[]
   projects: {
     title: string;

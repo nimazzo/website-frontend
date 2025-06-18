@@ -1,9 +1,4 @@
-import {
-  Box,
-  Grid,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import {Box, Grid, Typography, useTheme,} from "@mui/material";
 
 import {icons} from "../data/icons.tsx";
 import {useContent} from "../context/ContentContext.tsx";
@@ -89,7 +84,8 @@ const Skills = () => {
                         flex: '1 0 auto',
                       }}
                     >
-                      <Box fontSize="1.3rem">{icons[item.name] || '🛠️'}</Box>
+                      <Box
+                        fontSize="1.3rem">{icons[item.icon || item.name] || '🛠️'}</Box>
                       <Typography variant="body2">{item.name}</Typography>
                     </Box>
                   ))}
