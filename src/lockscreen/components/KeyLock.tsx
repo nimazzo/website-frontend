@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
 
 const KeyLock = () => {
@@ -7,15 +7,7 @@ const KeyLock = () => {
   const [wrongCode, setWrongCode] = useState(false);
   const [blocked, setBlocked] = useState(false);
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("error")) {
-      setDisplay("WRONG CODE".split(""));
-      setWrongCode(true);
-    }
-  }, []);
-
-  const handleNumberClick = (number: string) => {
+  const handleNumberClick = useCallback((number: string) => {
     if (wrongCode) {
       const newDisplay = ["_", "_", "_", "_", "_", "_", "_", "_"];
       newDisplay[0] = number;
@@ -30,9 +22,9 @@ const KeyLock = () => {
         setCursor(cursor + 1);
       }
     }
-  };
+  }, [cursor, display, wrongCode]);
 
-  const handleLeftArrow = () => {
+  const handleLeftArrow = useCallback(() => {
     if (wrongCode) {
       const newDisplay = ["_", "_", "_", "_", "_", "_", "_", "_"];
       setDisplay(newDisplay);
@@ -47,7 +39,7 @@ const KeyLock = () => {
       setDisplay(newDisplay);
       setCursor(cursor - 1);
     }
-  };
+  }, [cursor, display, wrongCode]);
 
   interface AuthResponse {
     status: string;
@@ -55,7 +47,7 @@ const KeyLock = () => {
     message: string;
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     try {
       const code = display.join("");
       const response = await fetch(`/authenticate?code=${encodeURIComponent(code)}`, {
@@ -84,7 +76,36 @@ const KeyLock = () => {
       setDisplay(`ERROR`.split(""));
       setWrongCode(true);
     }
-  };
+  }, [display]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("error")) {
+      setDisplay("WRONG CODE".split(""));
+      setWrongCode(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      if (blocked) return;
+
+      if (e.key >= "0" && e.key <= "9") {
+        handleNumberClick(e.key);
+      } else if (e.key === "Backspace") {
+        handleLeftArrow();
+      } else if (e.key === "Enter") {
+        if (!wrongCode && cursor >= display.length) {
+          await handleSubmit();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [blocked, cursor, display.length, handleLeftArrow, handleNumberClick, handleSubmit, wrongCode]);
 
   return (
     <>
