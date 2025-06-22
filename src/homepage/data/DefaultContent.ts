@@ -13,6 +13,10 @@ const DefaultContent: ContentData = {
       text: "Check out my GitHub",
       url: "#"
     },
+    cv: {
+      text: "Open CV",
+      url: "#"
+    },
     email: "email@example.com",
     footer: "Lorem ipsum dolor sit amet nostrud labore accusam lorem no ullamcorper vero"
   },

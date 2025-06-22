@@ -2,6 +2,7 @@ import {useMemo} from "react";
 import {Avatar, Box, Link, Stack, Typography, useTheme} from "@mui/material";
 
 import GitHubIcon from '@mui/icons-material/GitHub';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 import {useContent} from "../context/ContentContext.tsx";
 import Section from "./Section.tsx";
@@ -69,6 +70,25 @@ const About = () => {
                   color="inherit"
                 >
                   {content.about.github.text}
+                </Link>
+              </Stack>
+
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+                mt={1}
+              >
+                <DescriptionIcon fontSize="small"/>
+                <Link
+                  href={content.about.cv.url}
+                  target="_blank"
+                  rel="noopener"
+                  underline="hover"
+                  color="inherit"
+                >
+                  {content.about.cv.text}
                 </Link>
               </Stack>
             </Box>

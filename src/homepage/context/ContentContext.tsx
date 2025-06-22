@@ -12,6 +12,10 @@ export interface ContentData {
       text: string;
       url: string;
     }
+    cv: {
+      text: string;
+      url: string;
+    }
     email: string;
     footer: string;
   }
