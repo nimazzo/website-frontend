@@ -11,6 +11,14 @@ import ScienceIcon from '@mui/icons-material/Science';
 import CableIcon from '@mui/icons-material/Cable';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import SoapIcon from '@mui/icons-material/Soap';
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import TerminalIcon from '@mui/icons-material/Terminal';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import DescriptionIcon from '@mui/icons-material/Description';
+import StorageIcon from '@mui/icons-material/Storage';
+import {FaReact} from 'react-icons/fa';
 
 export const icons: Record<string, string | ReactNode> = {
   'Java': '☕',
@@ -33,15 +41,23 @@ export const icons: Record<string, string | ReactNode> = {
   'PostgreSQL': '🐘',
   'School': <SchoolIcon color="primary" sx={{mr: 1}}/>,
   'Code': <CodeIcon color="primary" sx={{mr: 1}}/>,
-  "analytics": <PsychologyIcon color="primary" sx={{mr: 1}}/>,
-  "concepts": <BoltIcon color="primary" sx={{mr: 1}}/>,
-  "commitment": <WhatshotIcon color="primary" sx={{mr: 1}}/>,
-  "independent": <PersonIcon color="primary" sx={{mr: 1}}/>,
-  "teamwork": <Diversity3Icon color="primary" sx={{mr: 1}}/>,
-  "Design Patterns": <ExtensionIcon color="primary" sx={{mr: 1}}/>,
-  "Clean Code": <SoapIcon color="primary" sx={{mr: 1}}/>,
-  "TDD": <ScienceIcon color="primary" sx={{mr: 1}}/>,
-  "REST": <CableIcon color="primary" sx={{mr: 1}}/>
+  "analytics": <PsychologyIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  "concepts": <BoltIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  "commitment": <WhatshotIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  "independent": <PersonIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  "teamwork": <Diversity3Icon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  "Design Patterns": <ExtensionIcon color="primary" sx={{mr: 1, mt: 1}}/>,
+  "Clean Code": <SoapIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  "TDD": <ScienceIcon color="primary" sx={{mr: 1, mt: 1}}/>,
+  "REST": <CableIcon color="primary" sx={{mr: 1, mt: 1}}/>,
+  'Spring': <SettingsEthernetIcon color="primary" sx={{mr: 1, mt: 1}}/>,
+  'Spring MVC': <IntegrationInstructionsIcon color="primary" sx={{mr: 1, mt: 1}}/>,
+  'IntelliJ Idea': <TerminalIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  'Git': <GitHubIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  'Postman': <MailOutlineIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  'Swagger/OpenAPI': <DescriptionIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
+  'React': <FaReact color="#61DBFB" style={{marginRight: 8, marginTop: 8}}/>,
+  'Postgres/SQL': <StorageIcon color="primary" sx={{mr: 1, mt: 1}}/>
 };
 
 
