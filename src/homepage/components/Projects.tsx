@@ -5,6 +5,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import {useContent} from "../context/ContentContext.tsx";
 import Section from "./Section.tsx";
 import BlurredOverlay from "./BlurredOverlay.tsx";
+import {useTranslation} from "react-i18next";
 
 interface ProjectCardProps {
   project: {
@@ -18,6 +19,8 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
+  const {t} = useTranslation();
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -82,7 +85,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            View Source
+            {t(`projects.viewCode`)}
           </Button>
         </Box>
 

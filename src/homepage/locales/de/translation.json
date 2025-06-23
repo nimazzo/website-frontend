@@ -15,6 +15,9 @@
   "education": {
     "grade": "Note"
   },
+  "projects": {
+    "viewCode": "Code anzeigen"
+  },
   "legal": {
     "copyright": "Alle Rechte vorbehalten."
   }

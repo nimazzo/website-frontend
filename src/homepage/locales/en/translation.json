@@ -15,6 +15,9 @@
   "education": {
     "grade": "Grade"
   },
+  "projects": {
+    "viewCode": "View Code"
+  },
   "legal": {
     "copyright": "All rights reserved."
   }
