@@ -19,7 +19,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DescriptionIcon from '@mui/icons-material/Description';
 import StorageIcon from '@mui/icons-material/Storage';
 import MonitorIcon from '@mui/icons-material/Monitor';
-import {FaLinux, FaReact} from 'react-icons/fa';
+import {LinuxIcon, ReactIcon} from "./CustomIcons.tsx";
 
 export const icons: Record<string, string | ReactNode> = {
   'Java': '☕',
@@ -57,10 +57,10 @@ export const icons: Record<string, string | ReactNode> = {
   'Git': <GitHubIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
   'Postman': <MailOutlineIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
   'Swagger/OpenAPI': <DescriptionIcon color="primary" sx={{mr: 1, mt: 0.5}}/>,
-  'React': <FaReact color="#61DBFB" style={{marginRight: 8, marginTop: 8}}/>,
+  'React': <ReactIcon color="primary" sx={{mr: 1, mt: 1}}/>,
   'Postgres/SQL': <StorageIcon color="primary" sx={{mr: 1, mt: 1}}/>,
   'JavaFX': <MonitorIcon color="primary" sx={{mr: 1, mt: 1}}/>,
-  'Linux': <FaLinux color="#000" style={{marginRight: 8, marginTop: 8}}/>
+  'Linux': <LinuxIcon color="primary" sx={{mr: 1, mt: 1}}/>
 };
 
 
