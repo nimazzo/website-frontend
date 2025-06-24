@@ -50,7 +50,7 @@ const KeyLock = () => {
   const handleSubmit = useCallback(async () => {
     try {
       const code = display.join("");
-      const response = await fetch(`/authenticate?code=${encodeURIComponent(code)}`, {
+      const response = await fetch(`/login?code=${encodeURIComponent(code)}`, {
         method: "POST"
       });
 
